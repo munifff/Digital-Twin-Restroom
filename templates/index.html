@@ -87,19 +87,34 @@ body {
   left: 20px;
   width: 320px;
   max-width: calc(100% - 40px);
-  background: rgba(255, 255, 255, 0.95);
+  max-height: 80vh;
+  background: rgba(255, 255, 255, 0.98);
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   z-index: 97;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: all 0.3s ease;
   overflow: hidden;
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   display: none;
   opacity: 0;
   transform: translateY(-10px);
   will-change: transform, opacity;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+  border: 1px solid rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+
+.control-panel.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.control-panel.minimized {
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
 }
 
 /* Hilangkan scrollbar untuk panel sensor dan semua elemen di dalamnya */
@@ -189,16 +204,24 @@ body {
 .navbar {
   position: fixed;
   top: 20px;
-  left: 20px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  z-index: 98;
-  backdrop-filter: blur(5px);
-  padding: 8px;
+  padding: 10px 15px;
+  z-index: 100;
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: all 0.3s ease;
+}
+
+#main-navbar {
+  left: 20px;
+}
+
+#right-navbar {
+  right: 20px;
+  left: auto;
 }
 
 .navbar-logo {
@@ -728,11 +751,62 @@ body {
 
 .sensor-card {
   background: white;
-  padding: 15px;
+  padding: 18px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.sensor-card h4 {
+  color: #2c3e50;
+  margin-top: 0;
   margin-bottom: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.sensor-card p {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.benefit-item:hover {
+  background: #f1f3f5;
+  transform: translateX(5px);
+}
+
+.benefit-item i {
+  font-size: 1.2rem;
+  color: #0d6efd;
+  margin-right: 12px;
+  margin-top: 3px;
+  min-width: 24px;
+  text-align: center;
+}
+
+.benefit-item h5 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+  font-size: 1rem;
+}
+
+.benefit-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
 .sensor-card:hover {
@@ -822,7 +896,7 @@ body {
 <!-- Notifikasi Suhu -->
 <div id="temp-notification" class="temp-notification"></div>
 
-<!-- Navbar -->
+<!-- Navbar Kiri -->
 <nav class="navbar" id="main-navbar">
   <div class="navbar-logo" id="navbar-logo">
     <i class="fas fa-home"></i>
@@ -839,6 +913,59 @@ body {
     <i class="fas fa-times"></i>
   </button>
 </nav>
+
+<!-- Navbar Kanan -->
+<nav class="navbar" id="right-navbar" style="left: auto; right: 20px;">
+  <button class="navbar-btn" id="toggle-digital-twin">
+    <i class="fas fa-info-circle"></i>
+    <span>Info Digital Twin</span>
+  </button>
+  <button class="navbar-close" id="close-right-navbar">
+    <i class="fas fa-times"></i>
+  </button>
+</nav>
+
+<!-- Panel Digital Twin -->
+<div id="digital-twin-panel" class="control-panel" style="right: 20px; left: auto; display: none;">
+  <div class="panel-header">
+    <span>Digital Twin</span>
+    <button class="close-btn" id="close-digital-twin-panel">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="panel-content" style="padding: 15px;">
+    <div class="sensor-card">
+      <h4>Apa itu Digital Twin?</h4>
+      <p>Digital Twin adalah representasi digital dari aset fisik yang memungkinkan pemantauan, analisis, dan simulasi secara real-time. Teknologi ini menciptakan model virtual yang selalu diperbarui dengan data dari sensor untuk mencerminkan kondisi aset fisik secara akurat.</p>
+      <img src="https://www.ibm.com/id-id/topics/what-is-digital-twin/_jcr_content/root/leadspace/leadspacecontent/Media_3cfc6e05/s7h_2a7fce62-7e4c-3f80-8578-c837ebd8527f/ibm-ai-digital-twin-2-1-1.jpg" alt="Digital Twin Concept" style="width: 100%; border-radius: 8px; margin: 10px 0;">
+    </div>
+
+    <div class="sensor-card">
+      <h4>Keuntungan Digital Twin</h4>
+      <div class="benefit-item">
+        <i class="fas fa-tachometer-alt"></i>
+        <div>
+          <h5>Pemantauan Real-time</h5>
+          <p>Pantau kondisi sistem secara langsung dengan pembaruan data real-time</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <i class="fas fa-tools"></i>
+        <div>
+          <h5>Pemeliharaan Prediktif</h5>
+          <p>Deteksi potensi masalah sebelum terjadi kerusakan</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <i class="fas fa-chart-line"></i>
+        <div>
+          <h5>Analitik Lanjutan</h5>
+          <p>Dapatkan wawasan mendalam dengan analisis data yang canggih</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Panel Kontrol Air (dalam navbar) -->
 <div id="water-panel" class="control-panel minimized">
@@ -1429,6 +1556,59 @@ window.onload = () => {
       
       // Inisialisasi navbar
       initNavbar();
+      
+      // Inisialisasi digital twin panel
+      const digitalTwinBtn = document.getElementById('toggle-digital-twin');
+      const digitalTwinPanel = document.getElementById('digital-twin-panel');
+      const closeDigitalTwinBtn = document.getElementById('close-digital-twin-panel');
+      
+      if (digitalTwinBtn && digitalTwinPanel) {
+        digitalTwinBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // Toggle display of digital twin panel
+          if (digitalTwinPanel.style.display === 'none' || digitalTwinPanel.classList.contains('minimized')) {
+            digitalTwinPanel.style.display = 'block';
+            setTimeout(() => {
+              digitalTwinPanel.classList.remove('minimized');
+              digitalTwinPanel.classList.add('show');
+            }, 10);
+          } else {
+            digitalTwinPanel.classList.remove('show');
+            digitalTwinPanel.classList.add('minimized');
+            setTimeout(() => {
+              digitalTwinPanel.style.display = 'none';
+            }, 300);
+          }
+        });
+        
+        // Close button for digital twin panel
+        if (closeDigitalTwinBtn) {
+          closeDigitalTwinBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            digitalTwinPanel.classList.remove('show');
+            digitalTwinPanel.classList.add('minimized');
+            setTimeout(() => {
+              digitalTwinPanel.style.display = 'none';
+            }, 300);
+          });
+        }
+        
+        // Close panel when clicking outside
+        document.addEventListener('click', function(e) {
+          if (digitalTwinPanel.style.display === 'block' && 
+              !digitalTwinPanel.contains(e.target) && 
+              e.target !== digitalTwinBtn && 
+              !digitalTwinBtn.contains(e.target)) {
+            digitalTwinPanel.classList.remove('show');
+            digitalTwinPanel.classList.add('minimized');
+            setTimeout(() => {
+              digitalTwinPanel.style.display = 'none';
+            }, 300);
+          }
+        });
+      }
     });
     
     // Fungsi untuk inisialisasi navbar
