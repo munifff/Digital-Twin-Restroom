@@ -48,11 +48,44 @@ def get_sensor_data():
         })
 
 # =========================
-# DASHBOARD
+# ROUTES
 # =========================
 @app.route('/')
+@app.route('/index')
 def index():
     return render_template('index.html')
+
+@app.route('/dht11')
+def dht11():
+    return render_template('dht11.html')
+
+@app.route('/ds18b20')
+@app.route('/DS18B20')  # Menambahkan route alternatif untuk case sensitivity
+@app.route('/ds18b20.html')
+@app.route('/DS18B20.html')
+def ds18b20():
+    return render_template('DS18B20.html')
+
+@app.route('/ldr')
+@app.route('/LDR')  # Menambahkan route alternatif untuk case sensitivity
+@app.route('/ldr.html')
+@app.route('/LDR.html')
+def ldr():
+    return render_template('ldr.html')
+
+@app.route('/mqtt135')
+@app.route('/MQTT135')  # Menambahkan route alternatif untuk case sensitivity
+@app.route('/mqtt135.html')
+@app.route('/MQTT135.html')
+def mqtt135():
+    return render_template('MQTT135.html')
+
+@app.route('/esp32')
+@app.route('/ESP32')  # Menambahkan route alternatif untuk case sensitivity
+@app.route('/esp32.html')
+@app.route('/ESP32.html')
+def esp32():
+    return render_template('ESP32.html')
 
 if __name__ == '__main__':
     print("Server berjalan di http://0.0.0.0:5000")
